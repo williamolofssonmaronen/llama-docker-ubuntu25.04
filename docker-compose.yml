@@ -23,10 +23,30 @@ services:
     depends_on:
       - ollama
     volumes:
-      - openwebui_data:/app/backend/data  # optional: persist chat history
+      - openwebui_data:/app/backend/data 
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  comfyui-boot:
+    stdin_open: true
+    tty: true
+    container_name: comfyui-cu124
+    ports:
+      - "8288:8188"
+    volumes:
+      - comfyui_data:/root
+    image: yanwk/comfyui-boot:cu124-slim
+    deploy:
+      resources:
+        reservations:
+            devices:
+              - driver: nvidia
+                count: all
+                capabilities:
+                  - gpu
+    #extra_hosts:
+    #  - "host.docker.internal:host-gateway"
 volumes:
   ollama_data:
   openwebui_data:
+  comfyui_data: 
